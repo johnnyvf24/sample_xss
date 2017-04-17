@@ -1,0 +1,10 @@
+<script>
+    var link = "http://localhost:8050";
+    var iframe = document.createElement('iframe');
+    iframe.frameBorder=0;
+    iframe.width="100%";
+    iframe.height="250px";
+    iframe.id="randomid";
+    iframe.setAttribute("src", link);
+    document.body.appendChild(iframe);
+</script>

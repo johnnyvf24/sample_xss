@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <h1>Sample blog 1 (Victim website)</h1>
+
+        <label>Type your blog post here!</label>
+        <br />
+        <textarea id="blogpost-textarea" style="width: 100%; height: 100px;"></textarea>
+        <button id="submit-blog-post">Submit</button>
+        <br />
+        <br />
+        <br />
+        <label>List of previous blog posts:</label>
+        <ul id="previous-blog-posts-list">
+        </ul>
+
+    </body>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        $(document).ready(function() {
+            var socket = io('http://localhost:5050');
+            socket.emit("get-all-posts");
+            socket.on('connect', function(){});
+            socket.on('receive-blogpost', function(data){
+                console.log(data);
+                var html = "";
+                for(var i = 0; i < data.posts.length; i++) {
+                    html += '<li>' + data.posts[i] + '</li>';
+                }
+                $("#previous-blog-posts-list").html(html);
+            });
+            socket.on('disconnect', function(){});
+
+            $("#submit-blog-post").click(function() {
+                var text = $("#blogpost-textarea").val();
+                socket.emit('send-blogpost', {text: text});
+            });
+
+        });
+    </script>
+
+</html>
